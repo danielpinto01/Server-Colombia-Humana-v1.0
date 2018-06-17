@@ -6,7 +6,6 @@ public class PlayerServer {
 	private String characterPlayer;
 	private int positionInX;
 	private int positionInY;
-	private static final int MOVE_UNITS = 50;
 
 	public PlayerServer() {
 		

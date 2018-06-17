@@ -41,6 +41,7 @@ public class JDialogInit extends JDialog{
 		add(lbInformation);
 		
 		txtPort = new JTextField(12);
+		txtPort.setText("2000");
 		txtPort.setFont(new Font("Century Gothic", 2, 16));
 		txtPort.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5)); 
 //		txtPort.setBorder(BorderFactory.createTitledBorder("Port"));

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import models.PlayerServer;
+
 public class Server extends Thread implements IObserver{
 	
 	private ServerSocket server;
@@ -14,6 +16,8 @@ public class Server extends Thread implements IObserver{
 	private int port;
 	
 	private ArrayList<Connection> connections; 
+	
+	private ArrayList<PlayerServer> list;
 	
 	public final static Logger LOGGER = Logger.getGlobal();
 	
@@ -26,7 +30,9 @@ public class Server extends Thread implements IObserver{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		list = new ArrayList<>();
 		LOGGER.log(Level.INFO, "Servidor inicado en puerto: " + this.port);
+		writeList();
 	}
 	
 	@Override
@@ -37,7 +43,7 @@ public class Server extends Thread implements IObserver{
 				Connection connection = new Connection(socket);
 				connection.addObservables(this);
 				connections.add(connection);
-				
+				list = connection.getPlayerServers();
 //				connection.sendMessageServer();
 				
 				LOGGER.log(Level.INFO, "Conexion aceptada: " + socket.getInetAddress().getHostAddress());
@@ -50,6 +56,10 @@ public class Server extends Thread implements IObserver{
 	
 	public ArrayList<Connection> getConnections() {
 		return connections;
+	}
+	
+	public void writeList() {
+		System.out.println("In server" + list);
 	}
 
 	@Override

@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.swing.Timer;
 
 import connections.Server;
+import models.Manager;
+import persistence.FileManager;
 import views.MainWindow;
 
 
@@ -14,11 +16,12 @@ public class Controller implements ActionListener{
 
 	private MainWindow mainWindow;
 	private Server server;
+	private Manager manager;
 
 	public Controller() {
+		manager = new Manager();
 		mainWindow = new MainWindow(this);
 		mainWindow.showDialogInit();
-
 		refreshListConnection();
 	}
 
