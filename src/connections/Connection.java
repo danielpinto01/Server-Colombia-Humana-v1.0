@@ -6,12 +6,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.json.simple.parser.ParseException;
 
-import models.Manager;
 import models.PlayerServer;
 import persistence.FileManager;
 
@@ -129,7 +127,7 @@ public class Connection extends Thread implements IObservable{
 	
 //	public void writeTotalList(ArrayList<PlayerServer> list) {
 //		try {
-//			fileManager.writeJson(list);x
+//			fileManager.writeJson(list);
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}

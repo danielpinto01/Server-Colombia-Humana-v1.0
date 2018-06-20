@@ -67,6 +67,7 @@ public class Server extends Thread implements IObserver{
 		ArrayList<String> list = new ArrayList<>();
 		for (Connection connection : connections) {
 			if (connection != actualConnection) {				
+				@SuppressWarnings("unused")
 				PlayerServer playerServer = connection.getPlayerServer();
 				System.out.println("[[[" + connection.getPlayerServer());
 				list.add("Name");

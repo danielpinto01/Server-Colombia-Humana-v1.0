@@ -22,14 +22,10 @@ public class MainWindow extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel pnlList;
-	
 	private JButton btnDownload;
-	
 	private JDialogInit jDialogInit;
-	
 	private DefaultListModel<String> defaultListModel;
 	private JList<String> jList;
-	
 	private JList<Connection> sockets;
 	private DefaultListModel<Connection> modelSockets;
 	
@@ -54,12 +50,10 @@ public class MainWindow extends JFrame{
 		
 		pnlList.add(new JScrollPane(jList));
 		jList.setBackground(Color.GRAY);
-//		pnlList.setBackground(Color.DARK_GRAY);
 		add(pnlList, BorderLayout.CENTER);
 		
 		btnDownload = new JButton("Exit");
 		btnDownload.setBackground(Color.GRAY);
-//		btnDownload.setForeground(Color.decode("#0288D1"));
 		btnDownload.setForeground(Color.WHITE);
 		btnDownload.setFont(new Font("Century Gothic", 0, 18));
 		btnDownload.setFocusable(false);

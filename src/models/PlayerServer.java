@@ -47,5 +47,4 @@ public class PlayerServer {
 		return "NamePlayer: " + namePlayer + ", CharacterPlayer:" + characterPlayer + ", PositionInX:"
 				+ positionInX + ", PositionInY:" + positionInY;
 	}
-
 }
