@@ -1,5 +1,8 @@
 package connections;
 
 public enum Response {
-	MESSAGE_SERVER
+	
+	MESSAGE_SERVER,
+	TOTAL_LIST;
+	
 }

@@ -103,7 +103,7 @@ public class FileManager {
 //	}
 
 	@SuppressWarnings("unchecked")
-	public void writeJson(ArrayList<PlayerServer> players) throws IOException {
+	public void writeTotalListJson(ArrayList<PlayerServer> players) throws IOException {
 		JSONObject root = new JSONObject();
 		JSONArray array = new JSONArray();
 		for (PlayerServer player : players) {
@@ -117,7 +117,7 @@ public class FileManager {
 
 		root.put("Players", array);
 
-		FileWriter outputStream = new FileWriter(new File("Totalplayers.json"));
+		FileWriter outputStream = new FileWriter(new File("TotalListPlayers.json"));
 		outputStream.write(root.toJSONString());
 		outputStream.close();
 	}

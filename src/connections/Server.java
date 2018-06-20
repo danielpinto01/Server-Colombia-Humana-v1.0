@@ -16,6 +16,8 @@ public class Server extends Thread implements IObserver{
 	private int port;
 
 	private ArrayList<Connection> connections; 
+	
+	private ArrayList<PlayerServer> playerServers;
 
 
 	public final static Logger LOGGER = Logger.getGlobal();
@@ -30,6 +32,7 @@ public class Server extends Thread implements IObserver{
 			e.printStackTrace();
 		}
 		LOGGER.log(Level.INFO, "Servidor inicado en puerto: " + this.port);
+		playerServers = new ArrayList<>();
 		start();
 		//		writeList();
 	}
@@ -56,26 +59,27 @@ public class Server extends Thread implements IObserver{
 		}
 	}
 
-	public void addConnection(Socket socket) {
+	public void addConnection(Socket socket) throws IOException {
 		Connection connection = new Connection(socket);
 		connection.addObservables(this);
 		connections.add(connection);
 		//		getPlayerInServer(connection);
+
 	}
 
-	public void getPlayerInServer(Connection actualConnection) {
-		ArrayList<String> list = new ArrayList<>();
-		for (Connection connection : connections) {
-			if (connection != actualConnection) {				
-				@SuppressWarnings("unused")
-				PlayerServer playerServer = connection.getPlayerServer();
-				System.out.println("[[[" + connection.getPlayerServer());
-				list.add("Name");
-				list.add("DUQUE");
-			}
-		}
-		System.out.println("Esta es la list "+ list);
-	}
+//	public void getPlayerInServer(Connection actualConnection) {
+//		ArrayList<String> list = new ArrayList<>();
+//		for (Connection connection : connections) {
+//			if (connection != actualConnection) {				
+//				@SuppressWarnings("unused")
+//				PlayerServer playerServer = connection.getPlayerServer();
+//				System.out.println("[[[" + connection.getPlayerServer());
+//				list.add("Name");
+//				list.add("DUQUE");
+//			}
+//		}
+//		System.out.println("Esta es la list "+ list);
+//	}
 
 
 	public ArrayList<Connection> getConnections() {
@@ -99,9 +103,21 @@ public class Server extends Thread implements IObserver{
 	@Override
 	public void addConnection(Connection connection) {
 		connections.add(connection);
-		System.out.println(connection.getPlayerServer().getNamePlayer());
+		playerServers.add(connection.getPlayerServer());
 //		if (connections.size() == 2) {
 //			start();
 //		}
+		connection.writeTotalList(getPlayerServers());
+		try {
+			connection.sendTotalListFromServerToClient();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		getPlayerServers();
+	}
+
+	public ArrayList<PlayerServer> getPlayerServers() {
+		System.out.println("list" + playerServers);
+		return playerServers;
 	}
 }

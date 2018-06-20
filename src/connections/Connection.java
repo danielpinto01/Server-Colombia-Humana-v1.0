@@ -3,9 +3,11 @@ package connections;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.json.simple.parser.ParseException;
@@ -64,7 +66,6 @@ public class Connection extends Thread implements IObservable{
 			break;
 		case PLAYER_INFORMATION:
 			receiveFile();
-		
 			break;
 		default:
 			break;
@@ -97,7 +98,7 @@ public class Connection extends Thread implements IObservable{
 	public void receiveFile() throws IOException, ParseException {
 		File file = new File(inputStream.readUTF());
 		byte[] bs = new byte[inputStream.readInt()];
-		System.out.println("Receiving File...");
+		System.out.println("Receiving File..." + file.toString());
 		inputStream.read(bs);
 		writeFile(file, bs);
 //		readOnePlayer(file);
@@ -106,7 +107,6 @@ public class Connection extends Thread implements IObservable{
 //		getPlayerServers();
 		playerServer = fileManager.readPlayer(String.valueOf(file));
 //		writeTotalList(getPlayerServers());
-		getPlayerServer();
 		advise();
 	}
 	
@@ -116,22 +116,30 @@ public class Connection extends Thread implements IObservable{
 		outputStream.close();
 	}
 	
-//	public ArrayList<String> readOnePlayer(File namePlayer) throws IOException, ParseException {
-////		try {
-////			System.out.println("Yeps" + fileManager.readPlayerString(String.valueOf(namePlayer)));
-////		} catch (IOException | ParseException e) {
-////			e.printStackTrace();
-////		}
-//		return fileManager.readPlayerString(String.valueOf(namePlayer));
-//	}
+	public void sendTotalListFromServerToClient() throws IOException {
+		outputStream.writeUTF(Response.TOTAL_LIST.toString());
+		File file = new File("TotalListPlayers.json");
+		byte[] bs = new byte[(int) file.length()]; 
+		System.out.println("Sending File... " + file.toString());
+		readTotalListFromServerToClient(file, bs);
+		outputStream.writeUTF(file.getName());
+		outputStream.writeInt(bs.length);
+		outputStream.write(bs);
+	}
 	
-//	public void writeTotalList(ArrayList<PlayerServer> list) {
-//		try {
-//			fileManager.writeJson(list);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void readTotalListFromServerToClient(File file, byte[] bs) throws IOException {
+		FileInputStream inputStream = new FileInputStream(file);
+		inputStream.read(bs);
+		inputStream.close();
+	}
+	
+	public void writeTotalList(ArrayList<PlayerServer> list) {
+		try {
+			fileManager.writeTotalListJson(list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private void advise() {
 		iObserver.addConnection(this);
