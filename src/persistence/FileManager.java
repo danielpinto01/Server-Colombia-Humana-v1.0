@@ -39,6 +39,7 @@ public class FileManager {
 				System.out.println("Aqui" + playerServer.toString());
 		return playerServer;
 	}
+	
 
 //	@SuppressWarnings("unused")
 //	public ArrayList<String> readPlayerString(String namePlayer) throws IOException, ParseException{

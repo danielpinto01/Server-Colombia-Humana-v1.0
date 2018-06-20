@@ -29,8 +29,6 @@ public class Connection extends Thread implements IObservable{
 	private FileManager fileManager;
 	private PlayerServer playerServer;
 	
-	private ArrayList<PlayerServer> listPlayersServers;
-
 	public Connection(Socket socket) {
 		this.connection = socket; 
 		fileManager = new FileManager();
@@ -40,8 +38,6 @@ public class Connection extends Thread implements IObservable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		listPlayersServers = new ArrayList<>();
 		
 		idObservable = ++count;
 		start();
@@ -70,6 +66,7 @@ public class Connection extends Thread implements IObservable{
 			break;
 		case PLAYER_INFORMATION:
 			receiveFile();
+		
 			break;
 		default:
 			break;
@@ -112,6 +109,7 @@ public class Connection extends Thread implements IObservable{
 		playerServer = fileManager.readPlayer(String.valueOf(file));
 //		writeTotalList(getPlayerServers());
 		getPlayerServer();
+		advise();
 	}
 	
 	public void writeFile(File file, byte[] bs) throws IOException {
@@ -129,18 +127,17 @@ public class Connection extends Thread implements IObservable{
 //		return fileManager.readPlayerString(String.valueOf(namePlayer));
 //	}
 	
-	
 //	public void writeTotalList(ArrayList<PlayerServer> list) {
 //		try {
-//			fileManager.writeJson(list);
+//			fileManager.writeJson(list);x
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
 //	}
 	
-	
-	
-	
+	private void advise() {
+		iObserver.addConnection(this);
+	}
 
 	@Override
 	public String toString() {
@@ -148,13 +145,8 @@ public class Connection extends Thread implements IObservable{
 	}
 
 	public PlayerServer getPlayerServer() {
-		System.out.println("unito" + playerServer);
+		System.out.println("player in connection " + playerServer);
 		return playerServer;
-	}
-
-	public ArrayList<PlayerServer> getPlayerServers() {
-//		System.out.println(listPlayersServers);
-		return listPlayersServers;
 	}
 
 	@Override
