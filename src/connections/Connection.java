@@ -116,8 +116,18 @@ public class Connection extends Thread implements IObservable{
 		outputStream.close();
 	}
 	
+	public void checkSendTotalListFromServerToClient() throws IOException {
+		outputStream.writeUTF(Response.CHECK_TOTAL_LIST.toString());
+		totalListFromServerToClient();
+	}
+	
 	public void sendTotalListFromServerToClient() throws IOException {
 		outputStream.writeUTF(Response.TOTAL_LIST.toString());
+		totalListFromServerToClient();
+	}
+	
+	public void totalListFromServerToClient() throws IOException {
+//		outputStream.writeUTF(Response.TOTAL_LIST.toString());
 		File file = new File("TotalListPlayers.json");
 		byte[] bs = new byte[(int) file.length()]; 
 		System.out.println("Sending File... " + file.toString());

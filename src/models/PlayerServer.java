@@ -6,16 +6,19 @@ public class PlayerServer {
 	private String characterPlayer;
 	private int positionInX;
 	private int positionInY;
+	
+	private int lifePlayer;
 
 	public PlayerServer() {
 		
 	}
 
-	public PlayerServer(String namePlayer, String characterPlayer, int positionX, int positionY) {
+	public PlayerServer(String namePlayer, String characterPlayer, int positionX, int positionY, int lifePlayer) {
 		this.namePlayer = namePlayer;
 		this.characterPlayer = characterPlayer;
 		this.positionInX = positionX;
 		this.positionInY = positionY;
+		this.lifePlayer = 100;
 	}
 
 	public String getNamePlayer() {
@@ -42,9 +45,17 @@ public class PlayerServer {
 		return positionInY;
 	}
 
+	public int getLifePlayer() {
+		return lifePlayer;
+	}
+
+	public void setLifePlayer(int lifePlayer) {
+		this.lifePlayer = lifePlayer;
+	}
+
 	@Override
 	public String toString() {
-		return "NamePlayer: " + namePlayer + ", CharacterPlayer:" + characterPlayer + ", PositionInX:"
-				+ positionInX + ", PositionInY:" + positionInY;
+		return "PlayerServer [namePlayer=" + namePlayer + ", characterPlayer=" + characterPlayer + ", positionInX="
+				+ positionInX + ", positionInY=" + positionInY + ", lifePlayer=" + lifePlayer + "]";
 	}
 }

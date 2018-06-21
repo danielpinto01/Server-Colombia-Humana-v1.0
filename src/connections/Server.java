@@ -47,8 +47,11 @@ public class Server extends Thread implements IObserver{
 				//				connections.add(connection);
 				//				System.out.println("Ya en server" + connection.getPlayerServer());
 				//				connection.sendMessageServer();
-				addConnection(socket);
 				
+				addConnection(socket);
+				for (Connection connection2 : connections) {
+					connection2.checkSendTotalListFromServerToClient();
+				}
 				Thread.sleep(100);
 				
 				LOGGER.log(Level.INFO, "Conexion aceptada: " + socket.getInetAddress().getHostAddress());
@@ -65,6 +68,7 @@ public class Server extends Thread implements IObserver{
 		connections.add(connection);
 		//		getPlayerInServer(connection);
 
+		
 	}
 
 //	public void getPlayerInServer(Connection actualConnection) {
@@ -96,6 +100,7 @@ public class Server extends Thread implements IObserver{
 		for (Connection connection : connections) {
 			if (!(idObservable == connection.getIdObservable())) {
 				connection.devolverMensaje(message);
+				
 			}
 		}
 	}
@@ -104,16 +109,13 @@ public class Server extends Thread implements IObserver{
 	public void addConnection(Connection connection) {
 		connections.add(connection);
 		playerServers.add(connection.getPlayerServer());
-//		if (connections.size() == 2) {
-//			start();
-//		}
 		connection.writeTotalList(getPlayerServers());
 		try {
 			connection.sendTotalListFromServerToClient();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//		getPlayerServers();
 	}
 
 	public ArrayList<PlayerServer> getPlayerServers() {
