@@ -9,7 +9,6 @@ import models.User;
 public class Game extends MyThread implements IObserver {
 
 	public static int gameNum = 0;
-	public int shootNum;
 	private ArrayList<Connection> connections;
 	private int sockets;
 	
@@ -23,7 +22,7 @@ public class Game extends MyThread implements IObserver {
 		connection.addObserver(this);
 		connections.add(connection);
 		sendUsers(connection);
-		if (connections.size() == 2) {
+		if (connections.size() == 4) {
 			for (Connection actual : connections) {
 				actual.startMessage();
 			}
@@ -69,6 +68,6 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public String toString() {
-		return "Game [shootNum=" + shootNum + ", connections=" + connections + ", sockets=" + sockets+ "]";
+		return "Game [" + " connections=" + connections + ", sockets=" + sockets+ "]";
 	}
 }
