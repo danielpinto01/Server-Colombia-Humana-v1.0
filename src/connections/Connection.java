@@ -4,180 +4,132 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
-import org.json.simple.parser.ParseException;
-
-import models.PlayerServer;
+import models.Area;
+import models.MyThread;
+import models.Player;
+import models.User;
 import persistence.FileManager;
 
-public class Connection extends Thread implements IObservable{
+public class Connection extends MyThread implements IObservable {
 
-	private Socket connection;
-	private DataOutputStream outputStream;
-	private DataInputStream inputStream;
-	private boolean stop;
-	
+	private static int count = 0;
 	private IObserver iObserver;
-	private int idObservable;
-	public static int count;
-	
-	private FileManager fileManager;
-	private PlayerServer playerServer;
+	private DataInputStream input;
+	private DataOutputStream output;
+	private Socket socket;
+	private Player player;
 	
 	public Connection(Socket socket) {
-		this.connection = socket; 
-		fileManager = new FileManager();
+		super(String.valueOf(count++), 20);
+		this.socket = socket;
 		try {
-			outputStream = new DataOutputStream(socket.getOutputStream());
-			inputStream = new DataInputStream(socket.getInputStream());
+			input = new DataInputStream(this.socket.getInputStream());
+			output = new DataOutputStream(this.socket.getOutputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println(e.getLocalizedMessage());
 		}
-		
-		idObservable = ++count;
 		start();
 	}
-	
-	@Override
-	public void run() {
-		String request = "";
-		while (!stop) {
-			try {
-				if ((request = inputStream.readUTF())!= null) {
-					receiveRequest(request);
-				}
-			} catch (IOException | ParseException e) {
-				System.err.println(e.getMessage());
-				stop = true;
-			}
-		}
-	}
-	
-	public void receiveRequest(String request) throws IOException, ParseException {
-		Server.LOGGER.log(Level.INFO, "Request: " + connection.getInetAddress().getHostAddress() + " - " + request);
-		switch (Request.valueOf(request)) {
-		case MESSAGE:
-			receiveMessage();
+
+	@SuppressWarnings("incomplete-switch")
+	private void managerRequest(String response) throws IOException {
+		switch (Request.valueOf(response)) {
+		case LOG_IN:
 			break;
-		case PLAYER_INFORMATION:
-			receiveFile();
+		case SIGN_IN:
+			createPlayer();
 			break;
-		default:
+		case MOVE_PLAYER:
+			setPosition();
 			break;
 		}
-		Server.LOGGER.log(Level.INFO, "Conexion con: " + connection.getInetAddress().getHostAddress() + " cerrada.");
 	}
-	
-//	public void sendMessageServer() throws IOException {
-//		outputStream.writeUTF(Response.MESSAGE_SERVER.toString());
-//		outputStream.writeUTF("Hola");
-//	}
-	
-	public void receiveMessage() {
-		try {
-			iObserver.update(idObservable, inputStream.readUTF());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+	private void setPosition() throws IOException {
+		player.getArea().setX(input.readInt());
+		player.getArea().setY(input.readInt());
 	}
-	
-	public void devolverMensaje(String message) {
-		try {
-			outputStream.writeUTF(Response.MESSAGE_SERVER.toString());
-			outputStream.writeUTF(message);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void receiveFile() throws IOException, ParseException {
-		File file = new File(inputStream.readUTF());
-		byte[] bs = new byte[inputStream.readInt()];
-		System.out.println("Receiving File..." + file.toString());
-		inputStream.read(bs);
-		writeFile(file, bs);
-//		readOnePlayer(file);
-//		writeTotalList(readOnePlayer(file));
-//		listPlayersServers.add(fileManager.readPlayer(String.valueOf(file)));
-//		getPlayerServers();
-		playerServer = fileManager.readPlayer(String.valueOf(file));
-//		writeTotalList(getPlayerServers());
+
+	public void createPlayer() throws IOException {
+		player = new Player(input.readUTF(), new Area(input.readInt(), input.readInt(), input.readInt(), input.readInt()));
 		advise();
 	}
-	
-	public void writeFile(File file, byte[] bs) throws IOException {
-		FileOutputStream outputStream = new FileOutputStream(file);
-		outputStream.write(bs);
-		outputStream.close();
-	}
-	
-	public void checkSendTotalListFromServerToClient() throws IOException {
-		outputStream.writeUTF(Response.CHECK_TOTAL_LIST.toString());
-		totalListFromServerToClient();
-	}
-	
-	public void sendTotalListFromServerToClient() throws IOException {
-		outputStream.writeUTF(Response.TOTAL_LIST.toString());
-		totalListFromServerToClient();
-	}
-	
-	public void totalListFromServerToClient() throws IOException {
-//		outputStream.writeUTF(Response.TOTAL_LIST.toString());
-		File file = new File("TotalListPlayers.json");
-		byte[] bs = new byte[(int) file.length()]; 
-		System.out.println("Sending File... " + file.toString());
-		readTotalListFromServerToClient(file, bs);
-		outputStream.writeUTF(file.getName());
-		outputStream.writeInt(bs.length);
-		outputStream.write(bs);
-	}
-	
-	public void readTotalListFromServerToClient(File file, byte[] bs) throws IOException {
-		FileInputStream inputStream = new FileInputStream(file);
-		inputStream.read(bs);
-		inputStream.close();
-	}
-	
-	public void writeTotalList(ArrayList<PlayerServer> list) {
+
+	public void sendPlayers(ArrayList<User> players) {
 		try {
-			fileManager.writeTotalListJson(list);
+			output.writeUTF(Response.PLAYERS_INFO.toString());
+			FileManager.saveFile(player.getName() + ".xml", players);
+			sendFile(new File(player.getName() + ".xml"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 	}
-	
+
+
+	private void sendFile(File file) throws IOException {
+		byte[] array = new byte[(int) file.length()];
+		readFileBytes(file, array);
+		output.writeUTF(file.getName());
+		output.writeInt(array.length);
+		output.write(array);
+		file.delete();
+	}
+
+	private void readFileBytes(File file, byte[] array) throws IOException {
+		FileInputStream fInputStream = new FileInputStream(file);
+		fInputStream.read(array);
+		fInputStream.close();
+	}
+
+	public void startMessage() {
+		try {
+			output.writeUTF(Response.START_GAME.toString());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	@Override
+	public void execute() {
+		String request;
+		try {
+			request = input.readUTF();
+			if (request != null) {
+				managerRequest(request);
+			}
+		} catch (IOException e) {
+			System.err.println(e.getMessage() + "-" + player.getName());
+			stop();
+			iObserver.removeConnection(this);
+		}
+	}
+
 	private void advise() {
-		iObserver.addConnection(this);
+		iObserver.addPlayer(this);
 	}
 
 	@Override
-	public String toString() {
-		return "Connection=" + connection +  " IP: " + connection.getInetAddress().getHostAddress();
-	}
-
-	public PlayerServer getPlayerServer() {
-		System.out.println("player in connection " + playerServer);
-		return playerServer;
-	}
-
-	@Override
-	public void addObservables(IObserver iObserver) {
+	public void addObserver(IObserver iObserver) {
 		this.iObserver = iObserver;
 	}
 
 	@Override
-	public void deleteObservables() {
-		this.iObserver = null;
+	public void removeObserver(IObserver observer) {
+		iObserver = null;
 	}
 
-	public int getIdObservable() {
-		return idObservable;
+	public Player getPlayer() {
+//		System.out.println(player + "en conexion");
+		return player;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+//		return "Connection [player=" + player + "]";
+		return " " + player;
+	}
 }

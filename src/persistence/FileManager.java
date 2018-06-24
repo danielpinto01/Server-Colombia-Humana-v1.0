@@ -1,62 +1,38 @@
 package persistence;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
-import models.Manager;
-import models.PlayerServer;
+import models.User;
 
 public class FileManager {
 
-	public PlayerServer readPlayer(String namePlayer) throws IOException, ParseException{
-		PlayerServer playerServer = new PlayerServer();;
-
-		JSONParser parser = new JSONParser();
-		JSONObject root = (JSONObject) 
-				parser.parse(new FileReader(namePlayer));
-		JSONArray playersRoot = (JSONArray) root.get("Player");
-
-		for (int i = 0; i < playersRoot.size(); i++) {
-			JSONObject jsonObject = (JSONObject) playersRoot.get(i);
-
-			String name = (String)jsonObject.get("namePlayer");
-			String character = (String)jsonObject.get("characterPlayer");
-			int x = (int)(long)jsonObject.get("positionX");
-			int y = (int)(long)jsonObject.get("positionY");
-			int life = (int)(long)jsonObject.get("lifePlayer");
-
-			playerServer = Manager.createPlayer(name, character, x, y, life);
-		} 
-//		System.out.println("Aqui" + playerServer.toString());
-		return playerServer;
-	}
-
-	@SuppressWarnings("unchecked")
-	public void writeTotalListJson(ArrayList<PlayerServer> players) throws IOException {
-		JSONObject root = new JSONObject();
-		JSONArray array = new JSONArray();
-		for (PlayerServer player : players) {
-			JSONObject not = new JSONObject();
-			not.put("namePlayer", player.getNamePlayer());
-			not.put("characterPlayer", player.getCharacterPlayer());
-			not.put("positionX", player.getPositionInX());
-			not.put("positionY", player.getPositionInY());
-			not.put("lifePlayer", player.getLifePlayer());
-			array.add(not);
+	public static void saveFile(String path, ArrayList<User> users) {
+		Element root = new Element("Players");
+		Document doc = new Document(root);
+		for (User user : users) {
+			Element player = new Element("Player");
+			Element name = new Element("Name").setText(user.getName());
+			Element positionX = new Element("X").setText(String.valueOf(user.getPositionX()));
+			Element positionY = new Element("Y").setText(String.valueOf(user.getPositionY()));
+			player.addContent(name);
+			player.addContent(positionX);
+			player.addContent(positionY);
+			root.addContent(player);
 		}
-
-		root.put("Players", array);
-
-		FileWriter outputStream = new FileWriter(new File("TotalListPlayers.json"));
-		outputStream.write(root.toJSONString());
-		outputStream.close();
+		try {
+			FileWriter fileWriter = new FileWriter(path);
+			XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+			xmlOutputter.setFormat(Format.getCompactFormat());
+			xmlOutputter.output(doc, fileWriter);
+			fileWriter.close();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 }

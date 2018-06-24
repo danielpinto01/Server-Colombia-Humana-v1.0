@@ -1,8 +1,8 @@
 package connections;
 
 public interface IObservable {
-	
-	void addObservables(IObserver iObserver);
-	void deleteObservables();
 
+	void addObserver(IObserver observer);
+	
+	void removeObserver(IObserver observer);
 }

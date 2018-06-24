@@ -1,6 +1,6 @@
 package connections;
 
 public enum Request {
-	MESSAGE,
-	PLAYER_INFORMATION;
+
+	MOVE_PLAYER, CREATE_SHOOT, LOG_IN, SIGN_IN;
 }
