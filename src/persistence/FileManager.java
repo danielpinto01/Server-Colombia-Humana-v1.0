@@ -8,6 +8,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import models.Enemy;
 import models.User;
 
 public class FileManager {
@@ -25,6 +26,26 @@ public class FileManager {
 			player.addContent(positionY);
 			root.addContent(player);
 		}
+		try {
+			FileWriter fileWriter = new FileWriter(path);
+			XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+			xmlOutputter.setFormat(Format.getCompactFormat());
+			xmlOutputter.output(doc, fileWriter);
+			fileWriter.close();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	public static void saveFileEnemy(String path, Enemy enemy) {
+		Element root = new Element("Enemys");
+		Document doc = new Document(root);
+			Element player = new Element("Enemy");
+			Element positionX = new Element("X").setText(String.valueOf(enemy.getPositionInX()));
+			Element positionY = new Element("Y").setText(String.valueOf(enemy.getPositionInY()));
+			player.addContent(positionX);
+			player.addContent(positionY);
+			root.addContent(player);
 		try {
 			FileWriter fileWriter = new FileWriter(path);
 			XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());

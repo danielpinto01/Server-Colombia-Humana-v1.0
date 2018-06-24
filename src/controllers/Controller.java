@@ -8,14 +8,17 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import connections.Server;
+import models.Manager;
 import views.MainWindow;
 
 public class Controller implements ICObserver {
 
 	private Server server;
 	private MainWindow mainWindow;
+//	private Manager manager;
 	
 	public Controller() {
+//		manager = new Manager();
 		int port = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el puerto", "2000"));
 		try {
 			server = new Server(port);

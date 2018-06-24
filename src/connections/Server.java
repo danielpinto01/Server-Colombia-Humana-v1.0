@@ -42,7 +42,7 @@ public class Server extends MyThread implements IObserver{
 	}
 
 	private void addToGame(Connection connection) {
-		if (games.get(games.size()-1).getSize() < 4) {
+		if (games.get(games.size()-1).getSize() < 2) {
 			games.get(games.size()-1).addConnection(connection);
 		} else {
 			Game game = new Game();

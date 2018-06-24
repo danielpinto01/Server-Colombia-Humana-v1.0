@@ -22,7 +22,7 @@ public class Game extends MyThread implements IObserver {
 		connection.addObserver(this);
 		connections.add(connection);
 		sendUsers(connection);
-		if (connections.size() == 4) {
+		if (connections.size() == 2) {
 			for (Connection actual : connections) {
 				actual.startMessage();
 			}
@@ -44,6 +44,7 @@ public class Game extends MyThread implements IObserver {
 			}
 		}
 		actual.sendPlayers(list);
+//		actual.sendInformationEnemy();
 	}
 
 	public ArrayList<Connection> getConnections() {

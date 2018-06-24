@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import models.Area;
+import models.Enemy;
 import models.MyThread;
 import models.Player;
 import models.User;
@@ -23,8 +24,11 @@ public class Connection extends MyThread implements IObservable {
 	private Socket socket;
 	private Player player;
 	
+	private Enemy enemy;
+	
 	public Connection(Socket socket) {
 		super(String.valueOf(count++), 20);
+		enemy = new Enemy();
 		this.socket = socket;
 		try {
 			input = new DataInputStream(this.socket.getInputStream());
@@ -48,7 +52,7 @@ public class Connection extends MyThread implements IObservable {
 			break;
 		}
 	}
-
+	
 	private void setPosition() throws IOException {
 		player.getArea().setX(input.readInt());
 		player.getArea().setY(input.readInt());
@@ -64,11 +68,12 @@ public class Connection extends MyThread implements IObservable {
 			output.writeUTF(Response.PLAYERS_INFO.toString());
 			FileManager.saveFile(player.getName() + ".xml", players);
 			sendFile(new File(player.getName() + ".xml"));
+			
+			output.writeInt(enemy.getPositionInX());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}
-
 
 	private void sendFile(File file) throws IOException {
 		byte[] array = new byte[(int) file.length()];
@@ -78,7 +83,7 @@ public class Connection extends MyThread implements IObservable {
 		output.write(array);
 		file.delete();
 	}
-
+	
 	private void readFileBytes(File file, byte[] array) throws IOException {
 		FileInputStream fInputStream = new FileInputStream(file);
 		fInputStream.read(array);
