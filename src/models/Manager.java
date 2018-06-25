@@ -40,7 +40,6 @@ public class Manager extends MyThread{
 		}
 	}
 	
-	
 	public ArrayList<Bees> getBees() {
 //		System.out.println("ListBees" + bees);
 		return bees;
