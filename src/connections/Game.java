@@ -18,7 +18,8 @@ public class Game extends MyThread implements IObserver {
 	private Manager manager;
 	
 	public Game() {
-		super(String.valueOf(gameNum++), 20);
+//		super(String.valueOf(gameNum++), 20);
+		super(String.valueOf(gameNum++), 200);
 		connections = new ArrayList<>();
 		manager = new Manager();
 	}

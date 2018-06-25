@@ -65,10 +65,12 @@ public class Bees extends MyThread {
 	@Override
 	public void execute() {
 //		y += 10;
-		y += (int) (Math.random() * 30);
-		x -= (int) (Math.random() * 30);
+		y += (int) (Math.random() * 50);
+		x -= (int) (Math.random() * 50);
 		if (900 <= y) {
 			stop();
+		}else if (y == 200) {
+			y = (int) (Math.random() * 30);
 		}else if (x <= 5) {
 			x = 5;
 			y += 10;

@@ -27,7 +27,8 @@ public class Connection extends MyThread implements IObservable {
 	private Enemy enemy;
 	
 	public Connection(Socket socket) {
-		super(String.valueOf(count++), 20);
+//		super(String.valueOf(count++), 20);
+		super(String.valueOf(count++), 200);
 		enemy = new Enemy();
 		this.socket = socket;
 		try {
