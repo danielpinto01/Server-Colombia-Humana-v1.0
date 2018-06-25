@@ -40,7 +40,7 @@ public class MainWindow extends JFrame{
 		sockets.setFont(new Font("Century Gothic", 1, 16));
 		add(sockets, BorderLayout.CENTER);
 		
-		btnExit = new JButton("Exit");
+		btnExit = new JButton("Salir");
 		btnExit.setBackground(Color.GRAY);
 		btnExit.setForeground(Color.WHITE);
 		btnExit.setFont(new Font("Century Gothic", 0, 18));

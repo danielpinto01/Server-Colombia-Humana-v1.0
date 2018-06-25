@@ -31,7 +31,7 @@ public class JDialogInit extends JDialog{
 		setSize(320, 200);
 		setLocationRelativeTo(null);
 		
-		lbInformation = new JLabel("Enter the port:");
+		lbInformation = new JLabel("Ingrese el puerto:");
 		lbInformation.setBackground(Color.GRAY);
 		lbInformation.setHorizontalAlignment(SwingConstants.CENTER);
 		lbInformation.setFont(new Font("Century Gothic", 0, 18));
@@ -40,10 +40,9 @@ public class JDialogInit extends JDialog{
 		txtPort = new JTextField("2000");
 		txtPort.setFont(new Font("Century Gothic", 2, 16));
 		txtPort.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5)); 
-//		txtPort.setBorder(BorderFactory.createTitledBorder("Port"));
 		add(txtPort);
 		
-		btnInit = new JButton("Init");
+		btnInit = new JButton("Iniciar");
 		btnInit.setBackground(Color.GRAY);
 		btnInit.setForeground(Color.WHITE);
 		btnInit.setFont(new Font("Century Gothic", 0, 18));

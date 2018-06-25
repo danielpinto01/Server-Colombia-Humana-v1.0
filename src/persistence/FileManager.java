@@ -9,10 +9,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 import models.Bees;
-import models.Enemy;
 import models.User;
 
 public class FileManager {
@@ -66,18 +63,4 @@ public class FileManager {
 			System.err.println(e.getMessage());
 		}
 	}
-	
-//	public ArrayList<Bees> listS() {
-//		ArrayList<Bees> list = new ArrayList<>();
-//		list.add(new Bees());
-//		list.add(new Bees());
-//		list.add(new Bees());
-//		return list;
-//	}
-//	
-//	
-//	public static void main(String[] args) {
-//		FileManager fileManager = new FileManager();
-//		FileManager.saveBeesFile(new File("beesPrueba.xml"), fileManager.listS());
-//	}
 }

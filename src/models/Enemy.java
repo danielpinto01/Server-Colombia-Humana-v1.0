@@ -1,11 +1,5 @@
 package models;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.Timer;
-
 public class Enemy extends MyThread{
 	
 	private int positionInX;
@@ -21,7 +15,6 @@ public class Enemy extends MyThread{
 		this.positionInY = 1;
 		moveEnemy = MoveEnemy.RIGHT;
 		sizeWindowX = 900;
-//		timerShot();
 		start();
 	}
 
@@ -62,38 +55,6 @@ public class Enemy extends MyThread{
 	public void setSizeWindowX(int sizeWindowX) {
 		this.sizeWindowX = sizeWindowX;
 	}
-	
-//	public void timerShot() {
-//		Timer timer = new Timer(1000, new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				shots.add(new Shot(positionInX, positionInY));
-//			}
-//		});
-//		timer.start();
-//	}
-	
-//	public void moveShot() {
-//		try {
-//			for (Shot shot : shots) {
-//				if (shot.getPositionInY() < 700) {
-//					shot.setPositionInY(shot.getPositionInY()+10);
-//					
-//				}else {
-//					shots.remove(shot);
-//				}
-////				System.out.println(shot.getPositionInY());
-//			}
-//		} catch (Exception e) {
-//			System.err.println(e.getMessage());
-//		}
-//		
-//	}
-//
-//	public ArrayList<Shot> getShots() {
-//		return shots;
-//	}
 
 	@Override
 	public String toString() {
@@ -103,6 +64,5 @@ public class Enemy extends MyThread{
 	@Override
 	public void execute() {
 		moveEnemy();
-//		moveShot();
 	}
 }

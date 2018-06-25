@@ -4,11 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import connections.Server;
-import models.Manager;
 import views.MainWindow;
 
 public class Controller implements ICObserver, ActionListener{
@@ -19,12 +17,6 @@ public class Controller implements ICObserver, ActionListener{
 	public Controller() {
 		mainWindow = new MainWindow(this);
 		mainWindow.showDialogInit();
-//		int port = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el puerto", "2000"));
-//		try {
-//			server = new Server(port);
-//		} catch (IOException e) {
-//			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-//		}
 		refreshListConnection();
 	}
 	

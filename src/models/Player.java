@@ -39,7 +39,6 @@ public class Player {
 
 	@Override
 	public String toString() {
-//		return "Player [name=" + name + ", life=" + life + ", kills=" + kills + ", area=" + area + "]";
 		return "Se estableció conexión con: " + name;
 	}
 }

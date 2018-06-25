@@ -26,7 +26,6 @@ public class Manager extends MyThread{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				bees.add(new Bees());
-//				System.out.println(bees + "LIst");
 			}
 		});
 		timer.start();
@@ -41,7 +40,6 @@ public class Manager extends MyThread{
 	}
 	
 	public ArrayList<Bees> getBees() {
-//		System.out.println("ListBees" + bees);
 		return bees;
 	}
 	
