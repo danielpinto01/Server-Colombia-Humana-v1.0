@@ -21,7 +21,7 @@ public class Manager extends MyThread{
 	}
 	
 	public void timerBees() {
-		Timer timer = new Timer(2000, new ActionListener() {
+		Timer timer = new Timer(1000, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -42,7 +42,7 @@ public class Manager extends MyThread{
 	
 	
 	public ArrayList<Bees> getBees() {
-//		System.out.println("ListBees" + bees);
+		System.out.println("ListBees" + bees);
 		return bees;
 	}
 	

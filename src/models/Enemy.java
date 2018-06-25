@@ -17,10 +17,10 @@ public class Enemy extends MyThread{
 	
 	public Enemy() {
 		super("Enemy", 100);
-		this.positionInX = 20;
-		this.positionInY = 20;
+		this.positionInX = 950;
+		this.positionInY = 1;
 		moveEnemy = MoveEnemy.RIGHT;
-		sizeWindowX = 1000;
+		sizeWindowX = 900;
 //		timerShot();
 		start();
 	}
@@ -50,7 +50,7 @@ public class Enemy extends MyThread{
 		
 		if (positionInX >= sizeWindowX) {
 			moveEnemy = MoveEnemy.LEFT; 
-		}else if (positionInX <= 0) {
+		}else if (positionInX <= 750) {
 			moveEnemy = MoveEnemy.RIGHT;
 		}
 	}

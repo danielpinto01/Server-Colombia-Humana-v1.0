@@ -15,7 +15,8 @@ public class Bees extends MyThread {
 		this.type = (int) (Math.random() * 3 + 1);
 		life = type;
 		id = count++;
-		x = (int) (Math.random() * 1000);
+		x = 800;
+//		x = (int) (Math.random() * 1000);
 		setSize();
 		start();
 	}
@@ -50,6 +51,10 @@ public class Bees extends MyThread {
 		return type;
 	}
 	
+	public void setX(int x) {
+		this.x = x;
+	}
+
 	public void shock() {
 		life--;
 		if (life == 0) {
@@ -59,9 +64,14 @@ public class Bees extends MyThread {
 
 	@Override
 	public void execute() {
-		y += 10;
+//		y += 10;
+		y += (int) (Math.random() * 30);
+		x -= (int) (Math.random() * 30);
 		if (900 <= y) {
 			stop();
+		}else if (x <= 5) {
+			x = 5;
+			y += 10;
 		}
 	}
 }

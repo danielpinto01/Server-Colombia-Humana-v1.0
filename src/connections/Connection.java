@@ -148,6 +148,10 @@ public class Connection extends MyThread implements IObservable {
 	public Player getPlayer() {
 		return player;
 	}
+	
+	public Enemy getEnemy() {
+		return enemy;
+	}
 
 	@Override
 	public String toString() {

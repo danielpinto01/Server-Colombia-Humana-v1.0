@@ -61,16 +61,21 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void execute() {
-		File beesFile = new File("Bees.xml");
-		FileManager.saveBeesFile(beesFile, manager.getBees());
-		Connection connection;
-		for (int i = 0; i < connections.size(); i++) {			
-			connection = connections.get(i);
-			sendUsers(connection);
-			if (!manager.getBees().isEmpty()) {
-				connection.sendBees(beesFile);
+		try {
+			File beesFile = new File("Bees.xml");
+			FileManager.saveBeesFile(beesFile, manager.getBees());
+			Connection connection;
+			for (int i = 0; i < connections.size(); i++) {			
+				connection = connections.get(i);
+				sendUsers(connection);
+				if (!manager.getBees().isEmpty()) {
+					connection.sendBees(beesFile);
+				}
 			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
+	
 	}
 
 	@Override

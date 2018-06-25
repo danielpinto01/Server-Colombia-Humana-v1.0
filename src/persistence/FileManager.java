@@ -67,17 +67,17 @@ public class FileManager {
 		}
 	}
 	
-	public ArrayList<Bees> listS() {
-		ArrayList<Bees> list = new ArrayList<>();
-		list.add(new Bees());
-		list.add(new Bees());
-		list.add(new Bees());
-		return list;
-	}
-	
-	
-	public static void main(String[] args) {
-		FileManager fileManager = new FileManager();
-		FileManager.saveBeesFile(new File("beesPrueba.xml"), fileManager.listS());
-	}
+//	public ArrayList<Bees> listS() {
+//		ArrayList<Bees> list = new ArrayList<>();
+//		list.add(new Bees());
+//		list.add(new Bees());
+//		list.add(new Bees());
+//		return list;
+//	}
+//	
+//	
+//	public static void main(String[] args) {
+//		FileManager fileManager = new FileManager();
+//		FileManager.saveBeesFile(new File("beesPrueba.xml"), fileManager.listS());
+//	}
 }
