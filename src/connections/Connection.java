@@ -70,9 +70,27 @@ public class Connection extends MyThread implements IObservable {
 			sendFile(new File(player.getName() + ".xml"));
 			
 			output.writeInt(enemy.getPositionInX());
+			
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
+	}
+	
+	public void sendBees(File beesFile) {
+		try {
+			output.writeUTF(Response.SEND_BEES.toString());
+			sendFile(beesFile, player.getName());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	private void sendFile(File file, String fileName) throws IOException {
+		byte[] array = new byte[(int) file.length()];
+		readFileBytes(file, array);
+		output.writeUTF(file.getName());
+		output.writeInt(array.length);
+		output.write(array);
 	}
 
 	private void sendFile(File file) throws IOException {
@@ -128,13 +146,11 @@ public class Connection extends MyThread implements IObservable {
 	}
 
 	public Player getPlayer() {
-//		System.out.println(player + "en conexion");
 		return player;
 	}
 
 	@Override
 	public String toString() {
-//		return "Connection [player=" + player + "]";
 		return " " + player;
 	}
 }

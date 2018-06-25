@@ -1,10 +1,13 @@
 package connections;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import models.Manager;
 import models.MyThread;
 import models.Player;
 import models.User;
+import persistence.FileManager;
 
 public class Game extends MyThread implements IObserver {
 
@@ -12,9 +15,12 @@ public class Game extends MyThread implements IObserver {
 	private ArrayList<Connection> connections;
 	private int sockets;
 	
+	private Manager manager;
+	
 	public Game() {
 		super(String.valueOf(gameNum++), 20);
 		connections = new ArrayList<>();
+		manager = new Manager();
 	}
 
 	public void addConnection(Connection connection) {
@@ -27,6 +33,8 @@ public class Game extends MyThread implements IObserver {
 				actual.startMessage();
 			}
 			start();
+			manager.start();
+			manager.timerBees();
 		}	
 		sockets++;
 	}
@@ -44,7 +52,7 @@ public class Game extends MyThread implements IObserver {
 			}
 		}
 		actual.sendPlayers(list);
-//		actual.sendInformationEnemy();
+//		actual.sendShotList();
 	}
 
 	public ArrayList<Connection> getConnections() {
@@ -53,8 +61,15 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void execute() {
+		File beesFile = new File("Bees.xml");
+		FileManager.saveBeesFile(beesFile, manager.getBees());
+		Connection connection;
 		for (int i = 0; i < connections.size(); i++) {			
-			sendUsers(connections.get(i));
+			connection = connections.get(i);
+			sendUsers(connection);
+			if (!manager.getBees().isEmpty()) {
+				connection.sendBees(beesFile);
+			}
 		}
 	}
 

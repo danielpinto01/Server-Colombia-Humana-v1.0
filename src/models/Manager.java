@@ -1,23 +1,49 @@
 package models;
 
-public class Manager {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.Timer;
+
+public class Manager extends MyThread{
 	
-	private Enemy enemy;
+	private ArrayList<Bees> bees;
 	
 	public Manager() {
-		enemy = new Enemy();
-	}
-
-	public Enemy getEnemy() {
-		return enemy;
-	}
-
-	public void setEnemy(Enemy enemy) {
-		this.enemy = enemy;
+		super("", 200);
+		bees = new ArrayList<>();
 	}
 
 	@Override
-	public String toString() {
-		return "Manager [enemy=" + enemy + "]";
+	public void execute() {
+		removeBees();
 	}
+	
+	public void timerBees() {
+		Timer timer = new Timer(2000, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				bees.add(new Bees());
+//				System.out.println(bees + "LIst");
+			}
+		});
+		timer.start();
+	}
+	
+	private void removeBees() {
+		for (int i = 0; i < bees.size(); i++) {
+			if (bees.get(i).isStop()) {
+				bees.remove(i);
+			}
+		}
+	}
+	
+	
+	public ArrayList<Bees> getBees() {
+//		System.out.println("ListBees" + bees);
+		return bees;
+	}
+	
 }
